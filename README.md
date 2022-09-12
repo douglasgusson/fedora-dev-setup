@@ -16,5 +16,5 @@ git clone https://github.com/xcommerceweb/fedora-dev-setup.git
 ## Execução do playbook
 
 ```bash
-ansible-playbook fedora-dev-setup/setup_workstation.yml  -e "local_user=yourusername" --ask-become-pass
+ansible-playbook fedora-dev-setup/setup_workstation.yml --ask-become-pass
 ```

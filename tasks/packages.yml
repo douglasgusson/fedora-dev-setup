@@ -10,6 +10,24 @@
       - "@development tools"
     state: installed
 
+- name: Install Vim
+  dnf:
+    name:
+      - vim
+    state: installed
+
+- name: Install micro
+  dnf:
+    name:
+      - micro
+    state: installed
+
+- name: Install bat
+  dnf:
+    name:
+      - bat
+    state: installed
+
 - name: Install Yarn
   dnf:
     name:
@@ -22,11 +40,15 @@
       - thunderbird
     state: installed
 
-- name: Install fish shell
-  dnf:
-    name: 
-      - fish
-    state: installed
+- block:
+  - name: Install fish shell
+    dnf:
+      name: 
+        - fish
+      state: installed
+
+  - name: Set Fish as the default shell
+    shell: chsh -s $(which fish) {{ lookup('env', 'USER') }}
 
 - block:
   - name: Install starship
@@ -37,8 +59,69 @@
 
   - name: Copy starship config
     template:
-      src: templates/starship.toml
-      dest: /home/{{ local_user }}/.config/starship.toml
+      src: templates/starship.toml.j2
+      dest: /home/{{ lookup('env', 'USER') }}/.config/starship.toml
+
+- block:
+  - name: Install VSCode
+    dnf:
+      name: 
+        - code
+      state: installed
+
+  # - name: Install VSCode extensions
+  #   become: yes
+  #   become_user: lookup('env', 'USER')
+  #   vars:
+  #     allow_world_readable_tmpfiles: true
+  #   shell: code --install-extension {{ item }}
+  #   with_items:
+  #     - nicoespeon.abracadabra
+  #     - alefragnani.Bookmarks
+  #     - naumovs.color-highlight
+  #     - bierner.color-info
+  #     - ms-azuretools.vscode-docker
+  #     - mikestead.dotenv
+  #     - dracula-theme.theme-dracula
+  #     - EditorConfig.EditorConfig
+  #     - dbaeumer.vscode-eslint
+  #     - GitHub.copilot
+  #     - GitHub.vscode-pull-request-github
+  #     - eamodio.gitlens
+  #     - wix.vscode-import-cost
+  #     - equinusocio.vsc-material-theme-icons
+  #     - christian-kohler.npm-intellisense
+  #     - xdebug.php-debug
+  #     - bmewburn.vscode-intelephense-client
+  #     - csstools.postcss
+  #     - esbenp.prettier-vscode
+  #     - bradlc.vscode-tailwindcss
+  #     - redhat.vscode-xml
+
+- block:
+  - name: Install Sublime Text
+    dnf:
+      name: 
+        - sublime-text
+      state: present
+
+# - block:
+#   - name: Install asdf
+#     become: yes
+#     become_user: lookup('env', 'USER')
+#     git:
+#       repo: https://github.com/asdf-vm/asdf.git
+#       dest: "/home/{{ lookup('env', 'USER') }}/.asdf"
+#       version: v0.10.2
+
+#   - name: "Install asdf plugins"
+#     become: yes
+#     become_user: lookup('env', 'USER')
+#     shell: |
+#       source /home/{{ lookup('env', 'USER') }}/.asdf/asdf.sh
+#       asdf plugin-add {{ item }} || exit 0
+#     with_items:
+#       - nodejs
 
 - name: Install RPMFusion Packages
   dnf:
