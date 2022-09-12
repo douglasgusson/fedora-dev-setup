@@ -10,12 +10,12 @@ sudo dnf install ansible
 ## Execução do playbook
 
 ```bash
-ansible-playbook main.yml --ask-become-pass
+ansible-playbook setup_workstation.yml --ask-become-pass
 ```
 
 ou
 
 ```bash
-ansible-playbook main.yml -K
+ansible-playbook setup_workstation.yml -K
 ```
 
