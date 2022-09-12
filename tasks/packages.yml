@@ -10,6 +10,36 @@
       - "@development tools"
     state: installed
 
+- name: Install Yarn
+  dnf:
+    name:
+      - yarnpkg
+    state: installed
+
+- name: Install Thunderbird
+  dnf:
+    name: 
+      - thunderbird
+    state: installed
+
+- name: Install fish shell
+  dnf:
+    name: 
+      - fish
+    state: installed
+
+- block:
+  - name: Install starship
+    dnf:
+      name: 
+        - starship
+      state: installed
+
+  - name: Copy starship config
+    template:
+      src: templates/starship.toml
+      dest: /home/{{ local_user }}/.config/starship.toml
+
 - name: Install RPMFusion Packages
   dnf:
     name:
