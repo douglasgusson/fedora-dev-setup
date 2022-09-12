@@ -1,0 +1,9 @@
+---
+- name: Preparing Workstation
+  hosts: workstation
+  become: true
+  gather_facts: true
+
+  tasks:
+    - include_tasks: tasks/repos.yml
+    - include_tasks: tasks/packages.yml

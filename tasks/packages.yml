@@ -1,0 +1,29 @@
+---
+- name: Upgrade all packages
+  dnf:
+    name: "*"
+    state: latest # noqa 403 This is a workstation playbook and updating your software to the latest versions is a good idea
+
+- name: Install group packages
+  dnf:
+    name:
+      - "@development tools"
+    state: installed
+
+- name: Install RPMFusion Packages
+  dnf:
+    name:
+      - ffmpeg
+    state: installed
+
+- name: Install the Slack package from flathub for current user
+  community.general.flatpak:
+    name: com.slack.Slack
+    state: present
+    method: user
+
+- name: Install the Telegram package from flathub for current user
+  community.general.flatpak:
+    name: org.telegram.desktop
+    state: present
+    method: user
